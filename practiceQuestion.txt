@@ -1,0 +1,294 @@
+ 
+Create ASP.NET Core Web API With Entity Framework Code First Approach
+https://www.c-sharpcorner.com/article/create-asp-net-core-web-api-with-entity-framework-code-first-approach/
+Note: Framework 7.0 not having startup.cs file its replacement is program.cs
+Step 1
+Open Visual Studio and create a new project. Here I am using Visual Studio 2019. You can use as per your system and requirements.
+
+Step 2
+Find and select Asp.Net Core Web API and then click on the Next button.
+
+Step 3
+In the next wizard, you have to enter the following things and then click on the Next button
+Project Name
+Location of your project (Path where you want to save your project)
+
+Step 4
+In this wizard screen, you have to specify the following things and then click on create button.
+Target Framework, here I am using the current version installed in my system which is 5.
+Authentication type: Currently in this project, we are not using authentication so here I select none.
+Configure HTTPS: If you host your API with a secure HTTPS connection then you can check this box. It will add a redirection in your project which helps to redirect the http request to HTTPS automatically.
+Enable Docker: For this project, we are not using docker so leave unchecked
+Enable Open AI Support: If you want to implement Swagger in your project then you have to check this box. In this project, we are going to use a swagger so I check this box.
+
+Add Entity Framework and Create Tables
+For using the Entity Framework in our project and create a table using the code first approach we have to follow the below steps.
+Step 1
+Right-click on the project name and click on Manage NuGet Packages.
+
+Step 2
+Install the Following NuGet Packages.
+Microsoft.EntityFrameworkCore.SqlServer: This package is used to interact with SQL Server from our C# and .Net Core.
+Microsoft.EntityFrameworkCore.Tools: This package is contained various commands like Add-Migration, Drop-Database, Get-DbContext, Get-Migration, Remove-Migration, Scaffold-DbContext, Script-Migration, Update-Database. In this article, we use Add-Migration and Update-Database commands.
+Microsoft.Extensions.Configuration: Using this NuGet package we can read data from our app setting file. We will get our connection string from the app setting file.
+
+Step 3
+Now we add a new folder in our solution to contain various classes. For adding a new folder in our solution right click on project name the click on Add then click on New Folder and gave the name as Models.
+
+Step 4
+In this Models folder, we will use our entity classes. Right-click in this folder then Add then Class. Give a suitable name for your class.(Employee.cs)
+
+Step 5
+Add fields as you want to create in your table. Here I create an Employee class with the following fields. Here key attribute defines that use this column as the primary key.
+
+Step 6
+Now we create a context class which use as a middleware to SQL Server. Add a new class in your Models folder and add constructor and Employee DbSet as seen below code.
+public class EmpContext: DbContext {
+    public EmpContext(DbContextOptions options): base(options) {}
+    DbSet < Employees > Employees {
+        get;
+        set;
+    }
+}
+
+Step 7
+Now we have to connect SQL Server with our project, for that, we need a connection string, and for this string, we are going to add the in-app setting file. Add your connection string as showing below.(appsettings.json)
+
+Step 8
+Now we have to add Db Context in our startup file for this open startup file (5.0 Framework)and add the following code.
+In ConfigureService Method, we add our EmpContext class and pass connection string in it by getting from our appsetting file using Configure.GetConnectionString() method.
+
+step 9
+Now open Package Manager Console by click on Tool Menu then NuGet Package Manager then Package Manager Console.
+
+Step 10
+Add the following command.
+Add-Migration Init
+Here Init is our name of migration, you can give as per your choice. Hit enter.
+
+Step 11
+As you can see in your solution new folder named Migration is created and in this project, there are two files. One is EmpContextModelSnapshot and another one is *_Init, here * mean date time stamp.
+
+Step 12
+For now, our database and table are not created to make changes in the Server-side use below command.
+Update-Database
+Now you can see in our SQL Server Employee table is created with the same fields as we add in our model.
+
+step 13
+Create New Response Model
+To save and delete we are going to return a new model for send data to the user. To create a new folder called ViewModels In your solution because we want to store Entity classes and Other classes in a different place. Add a new class Called ResponseModel in this folder with the following properties as seen below code.
+
+Create Service to perform CRUD Operation
+In this project, we are going to use a repository pattern to interact with the database. We are not going to call the database in our controller, instead, we create a new service and call the database there. For this, we are going to create one interface and one class and then add dependency injection for these.
+Constructor in Service
+
+We are going to use DbContext in our service class for this we add dependency in the constructor as you can see in below code.
+
+Implement Service in Controller
+Step 1
+Add new controller by Right-click in Controllers folder then click in Add then Controller.
+
+Step 2
+Now select API from the filter and select API Controller – Empty and click on Add button.
+
+Step 3
+Now give an appropriate name and click on Add button.
+
+Constructor Of Controller
+In the Constructor of our controller, we implement dependency injection for our service.
+
+Note:when we add foreign key using migration make sure your table is empty.
+[Key] defines the Primary key and Table
+public int StateId { get; set; } Defines the Foreign Key
+public State State { get; set; } Show the relation.
+marking a field as private means that it can only be accessed within the class where it is declared.
+eg.  private EmpContext _context;
+
+eg. public class Employee
+    {
+        [Key]
+        public int EmployeeId{get; set;}
+        public string EmployeeFirstName { get; set; }
+        public string EmployeeLastName { get; set; }
+        public decimal Salary { get; set; }
+        public string Designation { get; set; }
+        public int DepartmentId { get; set; }
+        //public Department Department { get; set; }
+    }
+when u uncomment this then it show in api like this it's contain all details of department table
+request body:
+{
+  "employeeId": 0,
+  "employeeFirstName": "string",
+  "employeeLastName": "string",
+  "salary": 0,
+  "designation": "string",
+  "departmentId": 0,
+  "department": {
+    "departmentId": 0,
+    "departmentName": "string"
+  }
+}
+in that code you can add aslo department fields
+
+{
+  "employeeId": 0,
+  "employeeFirstName": "Alisha",
+  "employeeLastName": "Maljapte",
+  "salary": 55000,
+  "designation": "Engineer",
+  "departmentId": 4,
+  "department": {
+    "departmentId": 0,
+    "departmentName": "Java Department"
+  }
+}
+in that code its enter new department and add new employee with new department id.
+
+
+ASP.NET Core Web API with EF Core DB-First Approach
+
+Creating a Database and Tables
+Data Modelling
+Creating the Repository
+Creating an API
+Testing the API
+Creating Models
+Go to  Tools –> NuGet Package Manager –> Package Manager Console 
+Install-Package Microsoft.EntityFrameworkCore.Tools
+Install-Package Microsoft.EntityFrameworkCore.SqlServer
+Then, we can create the models from the existing database using Scaffold-DbContext command:
+Scaffold-DbContext "Server=.;Database=BookStore;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models 
+Scaffold-DbContext "Server=192.168.1.84;Database=WebAPICFA;User ID=sa;Password=synergy@12;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+In that when we use user id & password then no need to write Trusted_Connectio=True.
+
+further process same assss....
+
+
+
+
+Model-First Approach(ADO.NET Entity Data Model)
+Creating Model.edmx file this file include
+1.create project
+
+2.Right Click on project-->Add-->New Item-->Data-->ADO.NET Entity Data Model-->Add-->Empty Model-->Finish
+Right-click on empty space for adding a new Entity or object or table for a database like the following way.
+Right-click-->Add New-->Entity-->write table name-->ok  //one table is created
+Now, next, add more columns or scalar property. For that Right-click on Entity, Add New, then select Scalar Property 
+
+3.Next, generating a database from this Entity Model
+Right-click on empty space and select Generate Database from Model
+After clicking on Generate Database from Model, it will prompt the window of Generate Database Wizard for establishing the connection to create a database or use an already created database.
+Click on Next
+After clicking the OK button it will prompt you with a message box with the message as in the following image, Click on Yes. If you select No, then the database is not created.
+
+
+
+
+how to run project using terminal
+step1 cd /path/to/MyProject
+step2 dotnet build
+step3 dotnet run
+step4 dotnet run --project MyProject.csproj //If you have multiple projects in your solution, you can specify the project file like this
+
+
+
+
+
+
+
+
+
+JWT Token Implementation(https://medium.com/bina-nusantara-it-division/implementing-jwt-in-asp-net-core-6-0-web-api-c-3a396fa8cfeb#:~:text=The%20information%20of%20JWT%20is,a%20way%20to%20achieve%20this.)
+
+step1 create project webapi
+
+step2 
+Using System.IdentityModel.Tokens.Jwt library, we will generate the token. This library provides option to create, serialize and validate JSON Web Tokens.
+install Microsoft.AspNetCore.Authentication.JwtBearer
+
+step3 In appsetting.cs write code for jwt 
+"Jwt": {
+    "Issuer": "Issuer",
+    "Audience": "Audience",
+    "Key": "bd1a1ccf8095037f361a4d351e7c0de65f0776bfc2f478ea8d312c763bb6caca"
+  }
+
+step 4 Add code on program.cs file
+
+step5 Let’s create a “User” Model to store the Username and Password which we will usefor authorization.
+
+step6 Create a new Controller “AuthController” which we will use to authorize the user and return the JWT Token.
+
+
+Windows Presentation Foundation (WPF) is a UI framework that creates desktop client applications.
+
+https://www.c-sharpcorner.com/article/how-to-use-jwt-authentication-with-web-api/
+
+https://codepedia.info/jwt-authentication-in-aspnet-core-web-api-token
+
+
+
+React-Redux(Standalone javascript reactproject templte)
+
+npx create-react-app my-app
+cd my-app
+npm start
+
+React-Redux(React.js and redux templte)
+Step 1: Setting up your project
+Step 2: Installing Redux(npm install redux react-redux)
+Step 3: Creating the Redux store
+
+
+
+
+
+.NET Framework:
+It's like a toolbox of tools for building Windows applications.
+Think of it as a set of tools you'd use for carpentry, and these tools only work in your home workshop.
+It's specifically for Windows and doesn't work on other platforms like Mac or Linux.
+If you write code using .NET Framework tools, it's mostly for Windows applications.
+
+.NET Core (Now known as .NET 5+):
+It's like a set of tools that work not just in your home workshop (Windows) but also in other places like your friend's workshop (Mac) or a community workshop (Linux).
+It's for building applications that can run on Windows, Mac, or Linux.
+If you write code using .NET Core (or .NET 5+), it's not limited to just Windows, and it's more versatile.
+The shift to .NET 5 and later versions brings everything under one umbrella called ".NET," making it less confusing. So, when you hear ".NET" without a specific version, it usually means .NET 5 or a later version that can work on multiple platforms.
+
+
+
+
+
+
+C#
+
+What is C#?
+C# (pronounced as "C sharp") is a modern, object-oriented programming language developed by Microsoft.
+It's part of the .NET framework and is widely used for developing various types of applications, including desktop, web, mobile, and cloud-based applications.
+
+
+
+Value Types:
+Stored Value Directly: Value types store their data directly in memory, which means the value itself is stored in the variable. 
+When you copy a value type variable to another, a new copy of the value is created.
+Stored on the Stack: Value types are typically stored on the stack, which is a region of memory known for its speed but limited size.
+Examples: Common examples of value types in C# include int, float, double, char, enum, struct, and bool.
+
+eg.
+int a = 10;
+int b = a; // 'b' now has a copy of the value '10' from 'a'
+a = 20;    // Changing 'a' does not affect 'b'
+Console.WriteLine(b); // Output: 10
+
+
+Reference Types:
+Store a Reference: Reference types store a reference to the actual data in memory, not the data itself. When you copy a reference type variable, both variables refer to the same data.
+Stored on the Heap: Reference types are typically stored on the heap, a region of memory known for its flexibility but slower access times compared to the stack.
+Examples: Common examples of reference types in C# include string, class, interface, and user-defined classes.
+
+eg.
+string str1 = "Hello";
+string str2 = str1; // Both 'str1' and 'str2' point to the same string data
+str1 = "World";     // Changing 'str1' does not affect 'str2'
+Console.WriteLine(str2); // Output: Hello

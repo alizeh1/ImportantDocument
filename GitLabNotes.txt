@@ -1,0 +1,231 @@
+
+**************************************************************push existing project on gitlab*****************************************************
+1. git init  //You use git init when you want to start a new project and version control it with Git.
+
+2. git status //Git provides information about the state of your files, including whether they have been modified, added, or deleted
+
+3. git add .  // command is used to stage all changes in your current directory
+
+4. git commit -m "my first commit"  //command is used to create a new commit in a Git repository with a commit message.
+
+5. git status   //On branch master nothing to commit, working tree clean
+
+6. git remote add gitlab https://gitlab.com/AlishaMaljapte/projectuser.git  
+
+//git remote add: This is the Git command for adding a remote repository.
+//gitlab: This is the name you're giving to the remote repository.
+//https://gitlab.com/AlishaMaljapte/projectuser.git: This is the URL of the GitLab repository you want to connect to as a remote.
+
+7.git push -u -f gitlab master //The git push -u -f gitlab master command is used to forcefully push the "master" branch from your local repository to the remote repository named "gitlab."
+//git push: This is the Git command used to push changes from your local repository to a remote repository.
+//-u: The -u option stands for "upstream." When you use -u, it sets up a tracking relationship between your local branch and the remote branch. 
+This means that in the future, when you use git push or git pull without specifying a remote branch or destination, Git will automatically use the corresponding remote branch.
+//-f: The -f option stands for "force." When you use -f, you are forcefully pushing your local branch to the remote repository
+//gitlab: This is the name of the remote repository you want to push to.
+//master: This is the name of the local branch you want to push to the remote repository named "gitlab." In this case, you are pushing the "master" branch.
+*************************************************************************end**************************************************************
+
+
+**********************************************************GitHub***************************************************************
+1. git init
+2. git status
+3. git add .
+4. git commit -m "my first commit"
+5. git push -u -f github master
+******************************************************end**************************************************
+
+add branch
+git checkout -b new_branch_name
+
+switching branch
+ git checkout Development
+
+check branches list
+git branch -a
+
+stagg
+git add "File_Name"
+
+
+commit
+git commit -m "my first commit in dev branch"
+
+
+git fetch origin  # Fetch changes from the remote repository (use 'origin' or your remote's name)
+git pull origin Development  # Pull the changes into your local 'Development' branch
+
+git push origin Development  # Push your changes to the remote 'Development' branch
+
+
+Local Branches:
+
+"master" and "Development" are local branches. These branches exist only on your local machine, and they are used for making changes and keeping track of your work within your Git repository.
+
+Local branches are typically created from the remote branches, and you can switch between them as you work on different features, fixes, or experiments.
+
+Remote Branches:
+
+"main" is a remote branch. Remote branches exist on the remote Git server (in this case, GitLab), and they represent the state of the repository on the remote server.
+
+"main" is often used as the default name for the primary branch in Git repositories (it used to be called "master" in many repositories, but "main" has become more common due to inclusive language efforts).
+
+Remote branches are typically used for collaboration and sharing your work with others. You push your local changes to the corresponding remote branches, and others can pull those changes from the remote repository.
+
+Local Branches:
+
+"master" (local)
+"Development" (local)
+Remote Branches (on GitLab):
+
+"main" (remote)
+
+
+
+GitlabRunner for CICD pipeline.
+GitLab Runner is an open-source project that is used to run jobs and execute code in GitLab CI/CD (Continuous Integration/Continuous Deployment) pipelines.
+ 
+steps
+1.Install GitLab Runner  (https://docs.gitlab.com/runner/install/)
+  1.create folder in c drive (GitLab-Runner)
+  2.download the binary for(x86 or 64-bit) copy this exe file and paste it in folder (GitLab-Runner)
+  3.rename it(gitlab-runner)
+  4.Run an elevated command prompt(Go to cmd and run it as administator)
+  5.On cmd cd gitlab-runner file path enter
+  6.run gitlab-runner.exe install (on cmd) version is 16.3.0 
+  7.gitlab-runner --version (check version)
+  8.gitlab-runner.exe start
+
+
+2.Register(process to runner gitlab instance) (https://docs.gitlab.com/runner/register/)
+ 1.1st you stop the gitlab-rinner the register(gitlab-runner.exe stop)
+ 2.gitlab-runner.exe register stop
+   then Enter the GitLab instance URL (for example, https://gitlab.com/):  //copy this path(https://gitlab.com/) enter
+   then Enter the registration token: //Go to project-->settings-->runner-->expand-->below side project runner click 3 dots and copy token enter
+   then Enter a description for the runner: // enter description like my-runner1 enter
+   then Enter tags for the runner (comma-separated): // tyep ssh,ci enter
+   then Enter optional maintenance note for the runner: //tyep Gitlab-runner when we enter its print Registering runner... succeeded
+   then Enter an executor: docker+machine, custom, docker, parallels, shell, instance, kubernetes, docker-windows, ssh, virtualbox, docker-autoscaler: //shell enter-->its print Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!
+   then gitlab-runner.exe start
+
+3. start GitLab Runner.(gitlab-runner.exe start)
+
+4.check runner started in the project
+  Go to ur project-->settings-->CI-CD-->Got to the runner section-->expand-->In below side assigned project runner
+
+  
+What is gitLab CI-CD
+It covers the entire process, from writing and testing code to deploying it to production environments.
+
+steps:
+1. add .gitlab-ci.yml in the root folder of your project
+https://www.yamllint.com/
+
+demo_job_1:
+     tags:
+       - ci
+     script:
+       - echo Hello World  //run this code on https://www.yamllint.com/ save this file .gitlab-ci.yml nd copy this file nd paste it in your project folder.
+	   
+2.commit and push in GitLab repo	   
+	   
+3.start the runner
+
+4.make any changes in the project-->commit-->push	   
+	   
+*******************************************************************************************************************************************************************************************
+.gitlab-ci.yml file push on GitLab.	 
+  
+git add .gitlab-ci.yml  # Stage the .gitlab-ci.yml file
+git commit -m "Add .gitlab-ci.yml"  # Commit the changes
+git push origin master  # Push the changes to GitLab (replace 'master' with your branch name)
+
+***********************************************************************************************************************************************************************************************
+
+FATAL: Failed to start gitlab-runner: Access is denied.	   
+Pipeline failing? To keep GitLab spam and abuse free we ask that you verify your identity.
+
+
+
+error
+1.jobs:demo_job_2:tags config should be an array of strings
+demo_job_1:
+  tags:
+    - ci
+  script:
+    - echo Hello World
+
+demo_job_2:
+  tags:
+    - ci
+  script:
+    - echo "Build job is running 2."
+
+
+solve
+jobs:
+  demo_job_1:
+    tags:
+      - ci
+    script:
+      - echo Hello World
+
+  demo_job_2:
+    tags:
+      - ci
+    script:
+      - echo "Build job is running 2."
+
+	  
+2.jobs jobs config should implement a script: or a trigger: keyword
+jobs:
+  demo_job_1:
+    tags:
+      - ci
+    script:
+      - echo Hello World
+
+  demo_job_2:
+    tags:
+      - ci
+    script:
+      - echo "Build job is running 2."
+
+solve
+Make sure your .gitlab-ci.yml file follows a similar structure.
+stages:
+  - build
+
+job1:
+  stage: build
+  script:
+    - echo "Hello World from job1"
+
+job2:
+  stage: build
+  script:
+    - echo "Hello World from job2"
+
+	
+
+error
+when i push somthing in my gitlab project its show .gitlab-ci.yml`: (): did not find expected key while parsing a block mapping at line 1 column this error why what is wrong
+
+solving 
+syntax error issue
+	
+	
+	
+	
+Jobs:
+
+A "job" is a single task or unit of work defined within a pipeline configuration in the .gitlab-ci.yml file.
+Each job represents a specific action or set of actions to be executed as part of a pipeline.
+Jobs can include tasks like building code, running tests, deploying applications, and more.
+Multiple jobs can be defined within a single pipeline, and they can run concurrently or sequentially depending on their configuration.
+Pipelines:
+
+A "pipeline" is a series of jobs and their associated tasks defined in the .gitlab-ci.yml file.
+Pipelines are created automatically whenever a change is pushed to a GitLab repository, or they can be manually triggered.
+Each pipeline consists of one or more stages, and each stage consists of one or more jobs.
+Pipelines are responsible for orchestrating the execution of jobs and tracking their status.
+The goal of a pipeline is to automate the continuous integration and continuous delivery (CI/CD) process.
