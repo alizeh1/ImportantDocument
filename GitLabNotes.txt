@@ -34,6 +34,22 @@ This means that in the future, when you use git push or git pull without specify
 5. git push -u -f github master
 ******************************************************end**************************************************
 
+
+
+*********************************************Push code On particular branch******************************
+1.git checkout <branch_name>        //You can use the following command to switch to a branch
+2.git add .
+3.git commit -m "Your commit message"
+4.git push -u -f <branch_name>
+*********************************************end********************************************************
+
+**************************************Create Another Branch**********************************************
+1.git checkout -b <new_branch_name>      //To create a new branch, you can use the following command
+
+
+*****************************************end******************************************************
+
+
 add branch
 git checkout -b new_branch_name
 
