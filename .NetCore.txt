@@ -1,0 +1,15 @@
+1.What is .NET Core?
+Ans-.net core is completly new framework,which is a free and open-source platform developed and maintained by microsoft.
+One cool thing about it is that it works on different types of computers, like Windows, Mac, and Linux.
+
+2.What are Advantages of .NET Core Over . Net Framework?
+Ans-Works Everywhere: .NET Core can run on different types of computers like Windows, Mac, and Linux.
+Faster and Lighter: .NET Core is faster and doesn't take up as much space.
+Easier to Update: .NET Core is designed to be updated easily. This helps keep your applications modern and secure.
+Modular Design: .NET Core lets developers use only what they need. It's like having a menu where you can pick and choose what you want. This makes things more efficient and less complicated.
+
+3.Dotnet core request lifecycle?
+Ans-
+
+Request Begins:
+Someone sends a request to your web application. This could be clicking a link or submitting a form.

@@ -57,6 +57,7 @@ Now we have to connect SQL Server with our project, for that, we need a connecti
 Step 8
 Now we have to add Db Context in our startup file for this open startup file (5.0 Framework)and add the following code.
 In ConfigureService Method, we add our EmpContext class and pass connection string in it by getting from our appsetting file using Configure.GetConnectionString() method.
+eg.services.AddDbContext<EmpContext>(x => x.UseSqlServer(Configuration.GetConnectionString("ConStr")));
 
 step 9
 Now open Package Manager Console by click on Tool Menu then NuGet Package Manager then Package Manager Console.
@@ -166,7 +167,7 @@ further process same assss....
 
 
 
-
+https://www.c-sharpcorner.com/UploadFile/26b237/model-first-approach-in-entity-framework/
 Model-First Approach(ADO.NET Entity Data Model)
 Creating Model.edmx file this file include
 1.create project

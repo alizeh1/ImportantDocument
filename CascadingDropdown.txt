@@ -1,0 +1,311 @@
+using EntityFrameworkDB.Context;
+using System;
+using System.Data.Entity;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace EntityFrameworkDB.Controllers
+{
+     
+    public class UserController : Controller
+    {
+        Alisha_UserEntities1 objdb= new Alisha_UserEntities1();
+
+        // GET: User
+        public ActionResult Index(tblUser obj)
+        {
+            ModelState.Clear();
+            return View(obj);
+
+        }
+
+        [HttpPost]
+        public ActionResult SaveUser(tblUser model)
+        {
+          
+            if (ModelState.IsValid)   //for all validation is valid or not when its valid its enter
+            {
+
+                if(model.UserId== 0) {
+                    objdb.tblUsers.Add(model);
+                    objdb.SaveChanges();
+                }
+                else
+                {
+                    objdb.Entry(model).State=EntityState.Modified;
+                    objdb.SaveChanges();
+                }
+                //tblUser obj=new tblUser();
+                //obj.UserName= model.UserName;
+                //obj.UserAddress= model.UserAddress;
+                //obj.UserMobNo= model.UserMobNo;
+                //objdb.tblUsers.Add(obj);
+                //objdb.SaveChanges();
+                
+            }
+            ModelState.Clear();
+           
+            return View("Index");
+        }
+
+        public ActionResult student()
+        {
+            return View();
+        }
+
+        public ActionResult UserList()
+        {
+            var list = objdb.tblUsers.ToList();
+            return View(list);
+        }
+
+        public ActionResult Delete(int UserId)
+        {
+            var del = objdb.tblUsers.Where(x=>x.UserId== UserId).First();
+            objdb.tblUsers.Remove(del);
+            objdb.SaveChanges();
+            var list = objdb.tblUsers.ToList();      //our list model get null that why we rewrite  
+            return View("UserList",list);
+        }
+
+        public ActionResult Details(tblUser objDetails)
+        {
+            return View(objDetails);
+        }
+
+
+
+        public ActionResult Cascade1()
+        {
+            ViewBag.countrylist = new SelectList(GetCountryList(), "CountryId", "CountryName");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Cascade1(tblUserDetail model)
+        {
+            ViewBag.countrylist = new SelectList(GetCountryList(), "CountryId", "CountryName");
+            objdb.tblUserDetails.Add(model);
+            objdb.SaveChanges();
+            ModelState.Clear();
+            return View();
+        }
+
+
+        public List<tblCountry> GetCountryList()
+        {
+            List<tblCountry> countries=objdb.tblCountries.ToList();
+            return countries;
+        }
+
+        public ActionResult GetStateList(int id)
+        {
+            List<tblState> state=objdb.tblStates.Where(x=>x.CountryId== id).ToList();
+            ViewBag.statelist = new SelectList(state, "StateId", "StateName");
+            return PartialView("DisplayState");
+        }
+
+        public ActionResult GetCityList(int StateId)
+        {
+            List<tblCity> city = objdb.tblCities.Where(x => x.StateId == StateId).ToList();
+            ViewBag.citylist = new SelectList(city, "CityId", "CityName");
+            return PartialView("DisplayState");
+        }
+    }
+}
+
+/*************************************************************Cascadingcls************************************/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace EntityFrameworkDB.Models
+{
+    public class Cascadingcls
+    {
+        public int CityId { get; set; }
+      
+        public int StateId { get; set; }
+       
+        public int CountryId { get; set; }
+        public Nullable<System.DateTime> DOB { get; set; }
+        public int UserDetailsId { get; set; }
+        public string FullName { get; set; }
+        public string Gender { get; set; }
+        public string MobileNo { get; set; }
+        public string Address { get; set; }
+
+    }
+}
+
+/************************************************************View(Cascadingcls)***************************************/
+@model EntityFrameworkDB.Models.Cascadingcls
+
+@{
+    ViewBag.Title = "Cascade1";
+}
+
+<h2>Cascade1</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>tblUserDetail</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DOB, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*@if (ViewBag.countrylist != null)
+        {*@
+            <div class="form-group">
+                @Html.LabelFor(model => model.CountryId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.CountryId, ViewBag.countrylist as SelectList, "--Select Country--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.StateId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.StateId, new SelectList(""), "--Select State--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.CityId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.CityId, new SelectList(""), "--Select City--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+        @*}*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#CountryId").change(function () {
+            var countryid = $(this).val();
+            debugger
+
+            $.ajax({
+                type: "Post",
+                url: "GetStateList/" + countryid,
+                contenttype: "html",
+                success: function (response) {
+                    debugger
+                    $("#StateId").empty();
+                    $("#StateId").append(response);
+                }
+            })
+        })
+
+        $("#StateId").change(function () {
+            var stateid = $(this).val();
+            debugger
+
+            $.ajax({
+                type: "Post",
+                url: "GetCityList?StateId=" + stateid,
+                contenttype: "html",
+                success: function (response) {
+                    debugger
+                    $("#CityId").empty();
+                    $("#CityId").append(response);
+                }
+            })
+        })
+    })
+</script>
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+/****************************************************************DisplayState.cshtml**********************************/
+@model EntityFrameworkDB.Context.tblState
+
+
+@if (ViewBag.statelist != null)
+{
+    <option value="">--Select States--</option>
+
+    foreach (var item in ViewBag.statelist)
+    {
+        <option value="@item.Value">@item.Text</option>
+    }
+}
+
+@if (ViewBag.citylist != null)
+{
+    <option value="">--Select City--</option>
+
+    foreach (var item in ViewBag.citylist)
+    {
+        <option value="@item.Value">@item.Text</option>
+        @*<select id="CityId" name="CityId" class="form-control selectpicker"></select>*@
+
+            }
+            }

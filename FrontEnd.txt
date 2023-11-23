@@ -1,3 +1,10 @@
+
+  1. HTML to define the content of web pages
+
+   2. CSS to specify the layout of web pages
+
+   3. JavaScript to program the behavior of web pages
+
 ***************************************************************************HTML********************************************************************************************
 1.What is HTML?
 Expected Answer: HTML stands for HyperText Markup Language. It is the standard markup language for creating web pages and web applications.
@@ -32,7 +39,7 @@ Expected Answer: The target attribute specifies where to open the linked documen
 11.How does the <iframe> tag work, and what is it used for?
 Expected Answer: <iframe> is used to embed another document within the current HTML document. It is commonly used for embedding videos, maps, or other external content.
 
-12.html syntax
+12.html  
 Expected Answer:
 <!DOCTYPE html>
 <html>
@@ -65,7 +72,7 @@ Expected Answer:
 
 *******************************************************************CSS****************************************************************************************************************
 1.What is CSS?  or What is CSS and what is its role in web development?
-Answer: CSS stands for Cascading Style Sheets. It is a style sheet language used for describing the look and formatting of a document written in HTML or XML.It allows developers to control the presentation and layout of web pages.
+Answer: CSS stands for Cascading Style Sheets. It is a style sheet language used for describing the look and formatting of a document written in HTML or XML.
 
 2.What is the difference between inline, block, and inline-block elements?
 Answer:
@@ -89,7 +96,14 @@ Vertically: Use display: flex; and align-items: center; on the container or use 
 
 6.What is a media query? How is it used in CSS?
 Answer: A media query is a CSS technique used to apply different styles for different devices or screen sizes. 
-It uses the @media rule to include a block of CSS properties only if a certain condition is true, such as the screen width being below a certain value.
+@media media-type and (media-feature) {
+  /* CSS rules to be applied if the media query conditions are met */
+}
+
+@media screen and (max-width: 600px) {
+  body {
+    background-color: lightcoral;
+  }
 
 7.Explain the difference between em and rem units.
 Answer:
@@ -105,8 +119,8 @@ Static: The default positioning; the element is positioned according to the norm
 
 9.Explain the difference between padding and margin.
 Answer: Padding is the space inside the border of an element,
- while margin is the space outside the border of an element. 
-Padding is used to create space within an element, and margin is used to create space around an element.
+while margin is the space outside the border of an element. 
+
 
 10.How does the "float" property work in CSS?
 Answer: The "float" property is used to align elements to the left or right within their containing element.
@@ -115,15 +129,14 @@ Answer: The "float" property is used to align elements to the left or right with
 Answer: You can select an element with a specific class using the dot notation. For example, to select all elements with the class "example," you would use .example in your CSS.
 
 12.How do you select an element with a specific id in CSS?
-Answer: You can select an element with a specific id. For example, to select all elements with the class "example," you would use #example in your CSS.
+Answer: You can select an element with a specific id using #. For example, to select all elements with the class "example," you would use #example in your CSS.
 
 13.What is the "box-sizing" property used for?
 Answer: The box-sizing property is used to control how the total width and height of an element are calculated. 
 The default value is content-box, which includes only the content, but you can set it to border-box to include padding and border in the total width and height.
 
 14.What is the importance of "clearfix" in CSS?
-Answer: The "clearfix" technique is used to clear the float property. It ensures that a container expands to contain its floated children. 
-This is particularly useful when dealing with layout issues caused by floated elements.
+Answer: The "clearfix" technique is used to clear the float property.
 
 15.How can you optimize the performance of a website with CSS?
 Answer: Performance optimization in CSS can be achieved by minimizing the use of large images, combining and minifying CSS files, using efficient selectors,
@@ -149,7 +162,137 @@ Answer: You can include an external CSS file in an HTML document using the <link
 
 *****************************************************************************END********************************************************************************************
 
+
 ****************************************************************************JAVASCRIPT*****************************************************************************
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>The window.print() Method</h2>
+
+<p>Click the button to print the current page.</p>
+
+<button onclick="window.print()">Print this page</button>
+
+</body>
+</html>
+
+The JavaScript syntax defines two types of values:
+
+Fixed values
+Variable values
+Fixed values are called Literals.
+
+Variable values are called Variables.
+
+The let keyword was introduced in ES6 (2015)
+
+Variables defined with let cannot be Redeclared
+
+Variables defined with let must be Declared before use
+
+Variables defined with let have Block Scope
+
+Variables declared inside a { } block cannot be accessed from outside the block:
+{
+  let x = 2;
+}
+// x can NOT be used here
+
+Variables declared inside a { } block can be accessed from outside the block:
+{
+  var x = 2;
+}
+// x CAN be used here
+
+Difference Between var, let and const
+Scope	Redeclare	Reassign	Hoisted	Binds this
+var	No	Yes	Yes	Yes	Yes
+let	Yes	No	Yes	No	No
+const	Yes	No	No	No	
+
+
+
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>JavaScript Hoisting</h2>
+<p>With <b>let</b>, you cannot use a variable before it is declared.</p>
+<p id="demo"></p>
+
+<script>
+try {
+  carName = "Saab";
+  let carName = "Volvo";
+}
+catch(err) {
+  document.getElementById("demo").innerHTML = err;
+}
+</script>
+
+</body>
+</html>
+
+
+Multiplication (*) and division (/) have higher precedence than addition (+) and subtraction (-).
+
+And (as in school mathematics) the precedence can be changed by using parentheses.
+
+When using parentheses, the operations inside the parentheses are computed first:
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>JavaScript Arithmetic</h1>
+<h2>Operator Precedence</h2>
+<p>Multiplication has precedence over addition.</p>
+<p>But parenthesis has precedence over multiplication.</p>
+
+<p id="demo"></p>
+
+<script>
+document.getElementById("demo").innerHTML = (100 + 50) * 3;
+</script>
+
+</body>
+</html>
+
+Extracting String Parts
+slice(start, end)
+substring(start, end)
+substr(start, length)
+
+splice(whereNewElementAdd,HowMuchElementRemove,"Element",".."and so on) nd The slice() method creates a new array.The slice() method does not remove any elements from the source array.
+
+
+
+When many operations have the same precedence (like addition and subtraction or multiplication and division), they are computed from left to right:
+
+typeof operator to find the type of a JavaScript variable.
+
+Why Functions?
+With functions you can reuse code
+You can write code that can be used many times.
+You can use the same code with different arguments, to produce different results.
+
+variable contain single value,while object contain multiple value.eg..name:value pairs
+Accessing Object Properties..syntax..objectName.propertyName or objectName["propertyName"]
+Accessing Object Methods..syntax..eg..objectName.methodName()
+In JavaScript, the this keyword refers to an object.
+
+In an object method, this refers to the object.
+Alone, this refers to the global object.
+In a function, this refers to the global object.
+In a function, in strict mode, this is undefined.
+In an event, this refers to the element that received the event.
+Methods like call(), apply(), and bind() can refer this to any object.
+
+If you add a number and a string, the result will be a string!
+
 1.What is JavaScript?
 Answer: JavaScript is a high-level, interpreted programming language primarily used for client-side web development. It allows you to add dynamic behavior to web pages.
 
@@ -1083,4 +1226,13 @@ $(document).ready(function(){
 
 9.blur()-The function is executed when the form field loses focus.
 
+What is AJAX and Bootstrap?
+AJAX (Asynchronous JavaScript and XML) in the Web Application is used to update parts of the existing page and to retrieve the data from the Server asynchronously. AJAX improves the performance of the Web Application and makes the Application more interactive.
+
+Bootstrap is one of the most popular HTML, CSS and JS frameworks for developing responsive, mobile first projects on the Web.
+
 ******************************************************************************************END******************************************
+
+
+
+https://www.c-sharpcorner.com/article/crud-operation-in-asp-net-mvc-using-ajax-and-bootstrap/
